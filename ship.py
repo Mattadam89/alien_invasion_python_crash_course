@@ -12,6 +12,7 @@ class Ship:
         # assign screen to an attribute of a ship so it can be accessed in
         # methods of the this class
         self.screen = ai_game.screen
+        self.settings = ai_game.settings
 
         # pygame treats all objects as a rectangle even if they actually arent
         # so this gives us the rect attributes of the screen so we can place
@@ -25,7 +26,22 @@ class Ship:
         # start each new ship at the bottom center of the screen.
         self.rect.midbottom = self.screen_rect.midbottom
 
-    # in the pygame documentation the blit method
+        self.x = float(self.rect.x)
+
+        #movement flag; start with a ship that's not moving
+        self.moving_right = False
+        self.moving_left = False
+
+    def update(self):
+        """Update the ship's position based on the movement flag."""
+        if self.moving_right and self.rect.right < self.screen_rect.right:
+            self.x += self.settings.ship_speed 
+        if self.moving_left and self.rect.left > 0:
+            self.x -= self.settings.ship_speed
+
+        #update rect object from self.x.
+        self.rect.x = self.x
+
     def blitme(self):
         """Draw the ship at its current location."""
         self.screen.blit(self.image, self.rect)
